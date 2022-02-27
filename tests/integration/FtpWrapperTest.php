@@ -10,33 +10,31 @@ class FtpWrapperTest extends TestCase
 {
     public function testConstruct() : void
     {
-        $wrapper = new FtpWrapper(ConnectionHelper::getConnection());
-
+        $factory = new FtpConnectionFactory();
+        $wrapper = new FtpWrapper($factory->create());
         $this->assertInstanceOf(FtpWrapper::class, $wrapper);
     }
 
     public function testGetErrorMessage() : void
     {
-        $wrapper = new FtpWrapper(ConnectionHelper::getConnection());
-
+        $factory = new FtpConnectionFactory();
+        $wrapper = new FtpWrapper($factory->create());
         $wrapper->connect('foo.bar.com');
-
         $this->assertIsString($wrapper->getErrorMessage());
     }
 
     public function test__callWithExistFtpFunction() : void
     {
-        $wrapper = new FtpWrapper(ConnectionHelper::getConnection());
-
+        $factory = new FtpConnectionFactory();
+        $wrapper = new FtpWrapper($factory->create());
         $this->assertIsResource($wrapper->connect(HOST));
     }
 
     public function test__callWithNonExistFtpFunction() : void
     {
-        $wrapper = new FtpWrapper(ConnectionHelper::getConnection());
-
+        $factory = new FtpConnectionFactory();
+        $wrapper = new FtpWrapper($factory->create());
         $this->expectException(WrapperException::class);
-
         $wrapper->function();
     }
 }
